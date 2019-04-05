@@ -47,12 +47,6 @@ async function register (req, res) {
 };
 
 
-
-function findBy(filter) {
-  return db('users').where(filter);
-}
-
-
 // POST route to /api/login
 async function login(req, res) {
   if (!req.body.username || !req.body.password) {
@@ -63,7 +57,7 @@ async function login(req, res) {
 
   if (userExists && bcrypt.compareSync(password, userExists[0].password)) {
     const token = generateToken(userExists[0]);
-    console.log(token)
+    // console.log(token)
     return res.status(200).json({
       message: `Welcome ${req.body.username}!`,
       token,
@@ -87,16 +81,16 @@ function generateToken(user) {
 
 // GET route to /api/jokes
 function getJokes(req, res) {
-  const requestOptions = {
-    headers: { accept: 'application/json' },
-  };
+  const requestOptions = "Accept: 'application/json'"
 
   axios
-    .get('https://icanhazdadjoke.com/search', requestOptions)
+    .get('https://icanhazdadjoke.com/', requestOptions)
     .then(response => {
-      res.status(200).json(response.data.results);
+      // console.log(response)
+      return res.status(200).json(response.data.results);
     })
-    .catch(err => {
-      res.status(500).json({ message: 'Error Fetching Jokes', error: err });
+    .catch(error => {
+      // console.log(error)
+      return res.status(500).json({ message: 'Error Fetching Jokes', error: error });
     });
 }
