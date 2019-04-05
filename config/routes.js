@@ -81,20 +81,20 @@ function generateToken(user) {
 
 // GET route to /api/jokes
 function getJokes(req, res) {
-  const requestOptions = "Accept: 'application/json'"
+  const requestOptions = { headers: { accept: 'application/json' }}
 
   axios
-    .get('https://icanhazdadjoke.com/', requestOptions)
+    .get('https://icanhazdadjoke.com/search', requestOptions)
     .then(response => {
       return res.status(200).json(response.data.results);
     })
     .catch(error => {
       setTimeout(function () {
         try {
-          return res.status(500).json({ message: 'Error Fetching Jokes', error: error });
+          return res.status(500).json({ message:"Error Fetching Jokes", error: error });
         } catch (error) {
           return res.status(500).json({ message:"Timeout" })
         }
-      }, 500)
+      }, 1000)
     });
 }
