@@ -86,11 +86,15 @@ function getJokes(req, res) {
   axios
     .get('https://icanhazdadjoke.com/', requestOptions)
     .then(response => {
-      // console.log(response)
       return res.status(200).json(response.data.results);
     })
     .catch(error => {
-      // console.log(error)
-      return res.status(500).json({ message: 'Error Fetching Jokes', error: error });
+      setTimeout(function () {
+        try {
+          return res.status(500).json({ message: 'Error Fetching Jokes', error: error });
+        } catch (error) {
+          return res.status(500).json({ message:"Timeout" })
+        }
+      }, 500)
     });
 }
